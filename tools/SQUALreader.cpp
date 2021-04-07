@@ -1,5 +1,8 @@
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
+#include <vector>
 #include "../src/drivers/lStream.h"
+#include "../src/lib/slideAvg.h"
 
 lightSS sss("/dev/ttyS7");
 
@@ -10,9 +13,16 @@ void printFrame(const unsigned char* start){
     printf("\n");
 }
 
-int main(){
+int main(int argc, char** argv){
+    const int len = atoi(argv[1]);
+    slideAvg<double> sv(len);
+    std::vector<double> v(len);
+    for(double& i: v){
+        i = static_cast<double>(sss.getSQUAL());
+    }
+    sv.init(v.begin());
     while(1){
-        printf("%u\n", sss.getSQUAL());
+        printf("%f\n", sv.slide(sss.getSQUAL()));
     }
 }
 
