@@ -29,6 +29,8 @@ class ccBuf: public ccList<T, A>{
 
     template<typename I>
     void init(I begin, I end);
+
+    inline bool init(T val);
 };
 
 template<typename T, typename A>
@@ -42,6 +44,19 @@ template<typename T, typename A>
 ccBuf<T, A>::~ccBuf(){
     ator.deallocate(head, _size);
     _size = 0;
+}
+
+template<typename T, typename A>
+bool ccBuf<T, A>::init(T val){
+    ccNode<T>* tmp = tail;
+    if(++tail - head != _size){
+        new(tmp) ccNode<T>(val, static_cast<ccNode<T>*>(tail));
+        return true;
+    }else{
+        new(tmp) ccNode<T>(val, head);
+        tail--;
+        return false;
+    }
 }
 
 template<typename T, typename A>

@@ -65,10 +65,13 @@ class ccList{
         iterator(const ccList<T, A>& list, size_t offset);
         iterator(ccNode<T>* nodePtr);
 
-        iterator& operator++();
-        T& operator*() const;
-        bool operator==(const iterator& other) const;
-        bool operator!=(const iterator& other) const;
+        iterator&   operator++  ();
+        iterator    operator++  (int);
+        T&          operator*   () const;
+        iterator&   operator=   (const iterator& iter);
+                    operator ccNode<T>*     () const;
+        bool        operator==  (const iterator& other) const;
+        bool        operator!=  (const iterator& other) const;
 
       private:
         ccNode<T>* ccNodePtr;
@@ -84,8 +87,8 @@ class ccList{
 
     inline size_t size() const;
 
-    iterator begin() const;
-    iterator end() const;
+    inline iterator begin() const;
+    inline iterator end() const;
 
   private:  
 
@@ -193,8 +196,26 @@ typename ccList<T, A>::iterator& ccList<T, A>::iterator::operator++(){
 }
 
 template<typename T, typename A>
+typename ccList<T, A>::iterator ccList<T, A>::iterator::operator++(int){
+    auto ret = *this;
+    ccNodePtr = ccNodePtr->next();
+    return ret;
+}
+
+template<typename T, typename A>
 T& ccList<T, A>::iterator::operator*() const{
     return ccNodePtr->get();
+}
+
+template<typename T, typename A>
+ccList<T, A>::iterator::operator ccNode<T>*() const{
+    return ccNodePtr;
+}
+
+template<typename T, typename A>
+typename ccList<T, A>::iterator& ccList<T, A>::iterator::operator= (const iterator& iter){
+    this->ccNodePtr = iter.ccNodePtr;
+    return *this;
 }
 
 template<typename T, typename A>
