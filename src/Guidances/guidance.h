@@ -13,18 +13,34 @@ class guidance{
   public:
     using taskPtr = void(guidance::*)(quiver&);
     guidance(taskPtr task);
+    //Start looping task process
     void start(quiver& subject);
+    //Pause task process loop
     void pause();
+    // Run task process once
     void once(quiver& subject);
+    inline void waitFinish();
     ~guidance();
 
   private:
+    //Pointer to task process
+    //Initialize during derived class construction
     const taskPtr _task;
     bool run;
     std::thread taskThread;
 
 };
 
+void guidance::waitFinish(){
+    taskThread.join();
+}
+
+//The activation of asyncGuidance is deferred 
+//until a specific event is triggered.
+//A signal indicating the activation 
+//can be waited by the main thread
+//and sequential scheduling of guidances
+//can thereby be accomplished.
 class asyncGuidance: public guidance{
   public:
     asyncGuidance(taskPtr task);

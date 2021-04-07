@@ -25,7 +25,9 @@ void guidance::once(quiver& subject){
 }
 
 guidance::~guidance(){
-    taskThread.join();
+    if(taskThread.joinable()){
+        taskThread.join();
+    }
 }
 
 asyncGuidance::asyncGuidance(taskPtr task): guidance(task){

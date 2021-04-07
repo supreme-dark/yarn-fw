@@ -18,6 +18,9 @@ class lightSS{
     unsigned char buffer[8192];
     unsigned char *buftop;
     unsigned char *bufesp;
-    static const unsigned char* sstrrchr(const unsigned char *start, const unsigned char *end, unsigned char token);
-    static unsigned char checkSum(const unsigned char *start, const unsigned char *end);
+    static const unsigned char* sstrrchr(const unsigned char *start, 
+                                         const unsigned char *end, 
+                                               unsigned char token);
+    static unsigned char checkSum(const unsigned char *start, 
+                                  const unsigned char *end);
 };
